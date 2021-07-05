@@ -27,14 +27,14 @@ jobs:
            PLATFORM: "OSX"
          - platform-version: tvOS
            JOB: "XCODE"
-           DEST: "OS=14.0,name=Apple TV 4K"
+           DEST: "OS=14.3,name=Apple TV 4K"
            SCHEME: "Swinject-tvOS"
            SDK: "appletvsimulator"
            ACTION: "test"
            PLATFORM: "tvOS"
          - platform-version: watchOS
            JOB: "XCODE"
-           DEST: "OS=7.0,name=Apple Watch Series 6 - 44mm"
+           DEST: "OS=7.2,name=Apple Watch Series 6 - 44mm"
            SCHEME: "Swinject-watchOS"
            SDK: "watchsimulator"
            ACTION: "build"
@@ -42,5 +42,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v1
-      - name: Testing iOS app
+      - name: Testing Framework for - "${{ matrix.PLATFORM }}"
         run: xcodebuild "${{ matrix.ACTION }}" -project "${{ env.PROJECT }}" -scheme "${{ matrix.SCHEME }}" -sdk "${{ matrix.SDK }}" -destination "${{ matrix.DEST }}" -configuration Release ENABLE_TESTABILITY=YES | xcpretty
+        shell: bash
