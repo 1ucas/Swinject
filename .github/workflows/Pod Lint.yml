@@ -3,6 +3,12 @@
 name: Pod Lint
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 env:
   ENCODING: LC_CTYPE=en_US.UTF-8
 jobs:
