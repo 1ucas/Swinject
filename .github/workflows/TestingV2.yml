@@ -25,6 +25,20 @@ jobs:
            SDK: "macosx"
            ACTION: "test"
            PLATFORM: "OSX"
+        - platform-version: tvOS
+           JOB: "XCODE"
+           DEST: "OS=14.0,name=Apple TV 4K"
+           SCHEME: "Swinject-tvOS"
+           SDK: "appletvsimulator"
+           ACTION: "test"
+           PLATFORM: "tvOS"
+        - platform-version: watchOS
+           JOB: "XCODE"
+           DEST: "OS=7.0,name=Apple Watch Series 6 - 44mm"
+           SCHEME: "Swinject-watchOS"
+           SDK: "watchsimulator"
+           ACTION: "build"
+           PLATFORM: "watchOS"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v1
