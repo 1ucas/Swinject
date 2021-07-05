@@ -10,7 +10,7 @@ jobs:
     runs-on: macOS-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Linting PodSpec for Cocoapods"
         run: export "${{ env. ENCODING }}" | pod lib lint
         shell: bash
