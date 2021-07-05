@@ -6,7 +6,7 @@ on:
 env:
   ENCODING: LC_CTYPE=en_US.UTF-8
 jobs:
-  test:
+  pod-lint:
     runs-on: macOS-latest
     steps:
       - name: Checkout repository
