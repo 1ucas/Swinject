@@ -1,4 +1,5 @@
-# This is the First Workflow for Testing with Github Actions
+# This Workflow Releases a new Version of the Framework on
+# Github, Carthage and Cocoapods
 
 name: Release Version
 on:
