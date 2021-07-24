@@ -31,9 +31,19 @@ jobs:
             git tag "${{ github.event.inputs.new_version }}"
             git push --atomic
         shell: bash
-      - name: Github Release Draft
-        run: | 
-            gh release create v"${{ github.event.inputs.new_version }}" --draft
+      - name: Create Release Draft
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.new_version }}
+          release_name: Release ${{ github.event.inputs.new_version }}
+          body: |
+            Changes in this Release:
+            - TODO: Describe the Changes
+          draft: true
+          prerelease: false
         shell: bash
       - name: Publish PodSpec
         run: | 
