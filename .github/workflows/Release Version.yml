@@ -17,6 +17,10 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+      - name: Update Project File
+        run: |
+            brew install xcodegen
+            xcodegen generate  
       - name: Create Version
         run: | 
             agvtool new-marketing-version "${{ github.event.inputs.new_version }}"
