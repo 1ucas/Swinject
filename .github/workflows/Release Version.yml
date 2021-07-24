@@ -21,6 +21,7 @@ jobs:
         run: |
             brew install xcodegen
             xcodegen generate  
+        shell: bash
       - name: Create Version
         run: | 
             agvtool new-marketing-version "${{ github.event.inputs.new_version }}"
@@ -44,7 +45,6 @@ jobs:
             - TODO: Describe the Changes
           draft: true
           prerelease: false
-        shell: bash
       - name: Publish PodSpec
         run: | 
             export "${{ env. ENCODING }}" | pod lib lint
