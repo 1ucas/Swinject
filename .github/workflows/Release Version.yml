@@ -32,8 +32,6 @@ jobs:
             git tag "${{ github.event.inputs.new_version }}"
             git push --atomic
         shell: bash
-      - name: Resync Checkout
-        uses: actions/checkout@v2
       - name: Create Release Draft
         id: create_release
         uses: actions/create-release@v1
@@ -42,6 +40,7 @@ jobs:
         with:
           tag_name: ${{ github.event.inputs.new_version }}
           release_name: Release ${{ github.event.inputs.new_version }}
+          commitish: master
           body: |
             Changes in this Release:
             - TODO: Describe the Changes
