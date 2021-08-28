@@ -1,0 +1,64 @@
+# This Workflow Releases a new Version of the Framework on
+# Github, Carthage and Cocoapods
+
+
+# Pending creating a TAG right after the new marketing version
+# Keep one Job and multiple steps
+
+name: Release Version
+on:
+  workflow_dispatch:
+    inputs:
+     new_version:
+       description: "The version to release"
+       required: true
+env:
+  ENCODING: LC_CTYPE=en_US.UTF-8
+  DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
+jobs:
+  create-version:
+    runs-on: macos-10.15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Update Project File
+        run: |
+            brew install xcodegen
+            xcodegen generate  
+        shell: bash
+      - name: Create Version
+        run: | 
+            agvtool new-marketing-version "${{ github.event.inputs.new_version }}"
+            sed -i '' -e 's/\(s\.version.*=\).*/\1 "${{ github.event.inputs.new_version }}"/' ./Swinject.podspec
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git commit -a -m "Update the version to ${{ github.event.inputs.new_version }}"
+            git tag "${{ github.event.inputs.new_version }}"
+            git push --atomic
+        shell: bash
+  create-release-draft:
+    needs: create-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release Draft
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.new_version }}
+          release_name: Release ${{ github.event.inputs.new_version }}
+          commitish: master
+          body: |
+            Changes in this Release:
+            - TODO: Describe the Changes
+          draft: true
+          prerelease: false
+  publish-podspec:
+    needs: create-version
+    runs-on: macos-10.15
+    steps:
+      - name: Publish PodSpec
+        run: | 
+            export "${{ env. ENCODING }}" | pod lib lint
+        shell: bash
